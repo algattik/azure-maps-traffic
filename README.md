@@ -4,7 +4,13 @@
 
 Edit `box` in `code/settings.py` to define the area of interest (e.g. rectangle containing a city).
 
+## Azure Maps service
+
+Create an Azure Maps service (S0) tier.
+
 ## Run all
+
+`export MAPS_KEY=[Azure Maps Key]`
 
 `run-all.sh` runs all the scripts below in sequence.
 
