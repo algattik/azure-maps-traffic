@@ -18,7 +18,7 @@ node_palette = [
 
 def closest_node_pal(node):
     nodes = np.array([i[0] for i in node_palette])
-    closest_index = distance.cdist([node], nodes).argmin()
+    closest_index = distance.cdist([node[0:3]], nodes).argmin()
     return node_palette[closest_index][2]*40
 
 
