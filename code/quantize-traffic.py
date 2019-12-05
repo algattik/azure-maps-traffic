@@ -1,6 +1,5 @@
 from scipy.spatial import distance
 import numpy as np
-from settings import settings
 from PIL import Image
 
 node_palette = [
@@ -14,14 +13,19 @@ node_palette = [
     ([255, 153, 46], "amber", 5),
     ([255, 112, 42], "red", 6),
 ]
+nodes = np.array([i[0] for i in node_palette])
 
 
 def closest_node_pal(node):
-    nodes = np.array([i[0] for i in node_palette])
-    closest_index = distance.cdist([node[0:3]], nodes).argmin()
-    return node_palette[closest_index][2]*40
+    if [node] == [255, 255, 255, 0]:
+        intensity_level = 0  # white
+    else:
+        closest_index = distance.cdist([node[0:3]], nodes).argmin()
+        intensity_level = node_palette[closest_index][2]
+    return intensity_level * 40
 
 
 trafficImg = Image.open("data/stitched-traffic.png")
 na = np.apply_along_axis(closest_node_pal, 2, np.array(trafficImg))
-Image.fromarray(na.astype('uint8')).save("data/stitched-traffic-quantized.png", "PNG")
+Image.fromarray(na.astype('uint8')).save(
+  "data/stitched-traffic-quantized.png", "PNG")

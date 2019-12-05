@@ -21,10 +21,11 @@ def drawRoutes():
         im = drawRoute(im, routeFile)
     im.save("data/routes.png", "PNG")
 
+
 def drawRoute(im, routeFile):
 
     # make a blank image for the route, initialized to transparent text color
-    canvas = Image.new('RGBA', im.size, (255,255,255,0))
+    canvas = Image.new('RGBA', im.size, (255, 255, 255, 0))
     draw = ImageDraw.Draw(canvas)
 
     with open(routeFile) as inJson:
@@ -42,7 +43,6 @@ def drawRoute(im, routeFile):
 
     # merge route image with background
     return Image.alpha_composite(im, canvas)
-
 
 
 drawRoutes()
