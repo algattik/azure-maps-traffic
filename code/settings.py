@@ -2,7 +2,7 @@ import os
 from maputils import PositionToTileXY
 from typing import NamedTuple
 
-box = "51.5458709,-0.2258784/51.439161,-0.0196732"  # London
+box = "51.440154,0.074503/51.592107,-0.213945"  # London
 # box = "48.9225438,2.2172182/48.7919087,2.446609"  # Paris
 # box = "40.8552213,-74.092324/40.6380784,-73.8943915"  # NYC
 
@@ -18,6 +18,7 @@ tileSize = 256
 topLeftTile = PositionToTileXY((left, top), zoom, tileSize)
 bottomRightTile = PositionToTileXY((right, bottom), zoom, tileSize)
 
+# Safety checks to avoid spinning large download jobs
 assert bottomRightTile[0] - topLeftTile[0] >= 0
 assert bottomRightTile[1] - topLeftTile[1] >= 0
 assert bottomRightTile[0] - topLeftTile[0] < 10

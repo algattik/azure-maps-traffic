@@ -1,10 +1,15 @@
 import aiohttp
 import asyncio
 import random
+import itertools
 from settings import settings
+
+total = itertools.count()
+failures = itertools.count()
 
 
 async def dlroutes():
+    global total, failures
     async with aiohttp.ClientSession() as session:
         for routenum in range(100):
 
@@ -20,12 +25,21 @@ async def dlroutes():
                    "&computeTravelTimeFor=all"
                    )
             print(url)
-            async with session.get(url) as resp:
-                print(resp.status)
-                resp.raise_for_status()
-                fileName = f"data/route.{routenum}.json"
-                with open(fileName, "wb") as f:
-                    f.write(await resp.read())
+            next(total)
+            try:
+                async with session.get(url) as resp:
+                    resp.raise_for_status()
+                    fileName = f"data/route.{routenum}.json"
+                    with open(fileName, "wb") as f:
+                        f.write(await resp.read())
+            except Exception as e:
+                print(e)
+                next(failures)
 
 
 asyncio.run(dlroutes())
+
+totalCount = next(total)
+failureCount = next(failures)
+print(f"Total: {totalCount} Failed: {failureCount}")
+assert 1. * failureCount / totalCount < 0.1
